@@ -26,7 +26,7 @@ export class WorkComponent {
   readonly filters: readonly ProjectFilter[] = [
     'All work',
     'Publicis Sapient',
-    'TCS',
+    'Tata Consultancy Services',
   ];
   readonly selectedFilter = signal<ProjectFilter>('All work');
   readonly visibleProjects = computed(() =>
