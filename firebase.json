@@ -8,10 +8,8 @@
       "**/*.map",
       "index.csr.html"
     ],
-    "predeploy": ["npm run build"],
-    "rewrites": [
-      { "source": "**", "destination": "/index.html" }
-    ],
+    "predeploy": ["npm run build:prod"],
+    "rewrites": [{ "source": "**", "destination": "/index.html" }],
     "headers": [
       {
         "source": "**",
@@ -20,7 +18,10 @@
       {
         "source": "**/*.@(js|css)",
         "headers": [
-          { "key": "Cache-Control", "value": "public,max-age=31536000,immutable" }
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=31536000,immutable"
+          }
         ]
       }
     ]
