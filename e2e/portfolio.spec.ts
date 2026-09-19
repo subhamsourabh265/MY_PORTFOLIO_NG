@@ -4,15 +4,16 @@ import AxeBuilder from '@axe-core/playwright';
 test('SSR includes deferred resume content and does not depend on JavaScript', async ({
   browser,
   request,
+  baseURL,
 }) => {
   const response = await request.get('/');
   expect(response.ok()).toBeTruthy();
   const html = await response.text();
   expect(html).toContain('AWS Certified Cloud Practitioner');
   expect(html).toContain('MY ENGINEERING TOOLKIT');
-  const context = await browser.newContext({ javaScriptEnabled: false });
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   const page = await context.newPage();
-  await page.goto('http://localhost:4300');
+  await page.goto('/');
   await expect(page.locator('h1')).toBeVisible();
   await page.getByRole('link', { name: 'Experience', exact: true }).click();
   await expect(page.locator('#experience')).toBeInViewport();

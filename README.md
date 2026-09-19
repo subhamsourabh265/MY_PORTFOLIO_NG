@@ -1,4 +1,4 @@
-﻿# Subham Sourabh portfolio
+# Subham Sourabh portfolio
 
 Angular 21 standalone application with server rendering and prerendering.
 
@@ -17,6 +17,52 @@ Open http://localhost:4200. `npm run build` writes the production site to
 When deploying the SSR server, set `NG_ALLOWED_HOSTS` to a comma-separated list of
 your actual hostnames (without schemes or ports). Angular 21 checks SSR request
 hosts; localhost and loopback are allowed for local development.
+
+## Deploy to Firebase Hosting
+
+This portfolio is published as a prerendered static site. Firebase Hosting serves
+`dist/my_portfolio/browser`, including the resume PDF and lazy JavaScript bundles.
+Angular hydration and signals run in the browser; the Node SSR server is not
+deployed and `NG_ALLOWED_HOSTS` is not needed for this hosting setup.
+
+Install the Firebase CLI if it is not already available, then sign in:
+
+```sh
+npm install -g firebase-tools
+firebase login
+firebase projects:list
+```
+
+Create a project in the Firebase console if you do not already have one, and pass
+its actual project ID when deploying:
+
+```sh
+npm run deploy:firebase -- --project YOUR_PROJECT_ID
+```
+
+The Hosting predeploy hook always runs a fresh production build. Only Hosting is
+deployed. `firebase.json` preserves client-side routes and configures long-lived
+caching for hashed JavaScript/CSS while revalidating HTML and the resume PDF.
+The CLI prints the deployed `https://PROJECT_ID.web.app` address.
+
+Optionally run `firebase use --add` to save a default project in `.firebaserc`,
+then use `npm run deploy:firebase` without the project argument. Do not run
+`firebase init hosting` over this configuration or replace the generated index.
+
+Preview locally without a Firebase account or a live project:
+
+```sh
+npm run preview:firebase
+```
+
+Open http://127.0.0.1:5000. For automated browser checks against the Hosting emulator:
+
+```sh
+npm run build
+npm run test:firebase
+```
+
+The emulator checks use an isolated `demo-my-portfolio` project and do not deploy.
 
 ## Architecture
 

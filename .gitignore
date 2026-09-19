@@ -44,3 +44,8 @@ Thumbs.db
 # Browser test artifacts
 /test-results
 /playwright-report
+
+# Firebase local cache and logs
+/.firebase/
+firebase-debug.log*
+ui-debug.log*

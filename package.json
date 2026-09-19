@@ -5,11 +5,15 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:my_portfolio": "node dist/my_portfolio/server/server.mjs",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "deploy:firebase": "npm run build:prod && firebase deploy --project about-subham",
+    "preview:firebase": "npm run build && firebase emulators:start --only hosting --project demo-my-portfolio",
+    "test:firebase": "playwright test --config playwright.firebase.config.ts"
   },
   "private": true,
   "dependencies": {
