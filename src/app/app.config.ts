@@ -1,9 +1,24 @@
-import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
-
+import {
+  ApplicationConfig,
+  provideZonelessChangeDetection,
+} from '@angular/core';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import {
+  provideClientHydration,
+  withIncrementalHydration,
+} from '@angular/platform-browser';
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideClientHydration()]
+  providers: [
+    provideZonelessChangeDetection(),
+    provideRouter(
+      routes,
+      withInMemoryScrolling({
+        anchorScrolling: 'enabled',
+        scrollPositionRestoration: 'enabled',
+      }),
+    ),
+    provideClientHydration(withIncrementalHydration()),
+  ],
 };

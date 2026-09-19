@@ -1,0 +1,21 @@
+<article class="project" [attr.aria-label]="project().name">
+  <div [class]="'preview impact-preview ' + project().style">
+    <span class="eyebrow">{{ project().category }}</span
+    ><strong>{{ project().metric }}</strong>
+    <p>{{ project().label }}</p>
+    <span class="impact-mark" aria-hidden="true">✳</span>
+  </div>
+  <div class="project-heading">
+    <h3>{{ project().name }}</h3>
+  </div>
+  <p class="project-type">{{ project().type }}</p>
+  <details>
+    <summary>
+      View contribution<span class="sr-only">: {{ project().name }}</span>
+      <span aria-hidden="true">+</span>
+    </summary>
+    <p>{{ project().description }}</p>
+    <p class="stack">{{ project().stack }}</p>
+    <small>Professional contribution · {{ project().category }}</small>
+  </details>
+</article>

@@ -1,0 +1,35 @@
+﻿<section aria-labelledby="work-heading" class="work shell">
+  <div class="section-top">
+    <div>
+      <p class="eyebrow">01 / SELECTED WORK</p>
+      <h2 id="work-heading">
+        Engineering with <span class="serif">impact.</span>
+      </h2>
+    </div>
+    <p>Selected contributions across<br />enterprise and financial services.</p>
+  </div>
+  <div class="filters" role="group" aria-label="Filter projects">
+    @for (item of filters; track item) {
+      <button
+        type="button"
+        [disabled]="!interactive()"
+        (click)="selectedFilter.set(item)"
+        aria-controls="project-results"
+        [class.active]="selectedFilter() === item"
+        [attr.aria-pressed]="selectedFilter() === item"
+      >
+        {{ item }} <span>{{ filterCounts[item] }}</span>
+      </button>
+    }
+  </div>
+  <p class="result-count" role="status" aria-live="polite" aria-atomic="true">
+    Showing {{ visibleProjects().length }} contribution{{
+      visibleProjects().length === 1 ? "" : "s"
+    }}: {{ selectedFilter() }}.
+  </p>
+  <div class="project-grid" id="project-results">
+    @for (project of visibleProjects(); track project.name) {
+      <app-project-card [project]="project" />
+    }
+  </div>
+</section>

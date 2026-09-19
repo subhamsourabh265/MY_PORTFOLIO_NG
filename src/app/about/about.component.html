@@ -1,0 +1,31 @@
+<section aria-labelledby="about-heading" class="about shell">
+  <div>
+    <p class="eyebrow">02 / ABOUT ME</p>
+    <h2 id="about-heading">
+      Architecture, delivery,<br /><span class="serif">and people.</span>
+    </h2>
+    <div class="about-mark" aria-hidden="true">( ✳ )</div>
+  </div>
+  <div class="about-copy">
+    <p>
+      I'm a Lead Frontend Engineer with 9+ years of experience architecting
+      scalable enterprise applications. My core expertise is Angular and React,
+      supported by hands-on work with Node.js, GraphQL, Spring Boot, and AWS.
+    </p>
+    <p>
+      I own technical initiatives from architecture decisions to delivery,
+      mentor cross-functional teams, and guide client leadership on technical
+      debt and performance. I also help engineers adopt GenAI and Agentic AI
+      workflows through practical guidance and code review.
+    </p>
+    <p class="eyebrow skills-label">MY ENGINEERING TOOLKIT</p>
+    <div class="skill-groups">
+      @for (group of skillGroups; track group.name) {
+        <div>
+          <h3>{{ group.name }}</h3>
+          <p>{{ group.skills }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

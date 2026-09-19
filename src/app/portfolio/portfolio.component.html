@@ -1,0 +1,43 @@
+<app-hero />
+<div id="work" tabindex="-1" class="section-target">
+  <app-work />
+</div>
+<div id="about" tabindex="-1" class="section-target">
+  @defer (on viewport; on interaction; hydrate on viewport) {
+    <app-about />
+  } @placeholder {
+    <div class="defer-placeholder shell">
+      <button type="button" class="button">Load about section</button>
+    </div>
+  } @loading (after 150ms) {
+    <p class="defer-placeholder shell" role="status">Loading about...</p>
+  } @error {
+    <p class="defer-placeholder shell" role="alert">
+      Unable to load about. <a href="">Reload the page</a> or
+      <a href="assets/Subham_Sourabh_Lead_Angular_Resume_V1.pdf"
+        >read the resume (PDF)</a
+      >.
+    </p>
+  }
+</div>
+<div id="experience" tabindex="-1" class="section-target">
+  @defer (on viewport; on interaction; hydrate on viewport) {
+    <app-experience />
+  } @placeholder {
+    <div class="defer-placeholder shell">
+      <button type="button" class="button">Load experience section</button>
+    </div>
+  } @loading (after 150ms) {
+    <p class="defer-placeholder shell" role="status">Loading experience...</p>
+  } @error {
+    <p class="defer-placeholder shell" role="alert">
+      Unable to load experience. <a href="">Reload the page</a> or
+      <a href="assets/Subham_Sourabh_Lead_Angular_Resume_V1.pdf"
+        >read the resume (PDF)</a
+      >.
+    </p>
+  }
+</div>
+<div id="contact" tabindex="-1" class="section-target">
+  <app-contact />
+</div>

@@ -1,27 +1,68 @@
-# MyPortfolio
+﻿# Subham Sourabh portfolio
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.2.
+Angular 21 standalone application with server rendering and prerendering.
 
-## Development server
+## Run locally
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Use Node 20.19+, 22.12+, or 24 and install the locked dependencies:
 
-## Code scaffolding
+```sh
+npm ci
+npm start
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Open http://localhost:4200. `npm run build` writes the production site to
+`dist/my_portfolio`. `npm run serve:ssr:my_portfolio` serves the production build.
 
-## Build
+When deploying the SSR server, set `NG_ALLOWED_HOSTS` to a comma-separated list of
+your actual hostnames (without schemes or ports). Angular 21 checks SSR request
+hosts; localhost and loopback are allowed for local development.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Architecture
 
-## Running unit tests
+- `app.component` owns the skip link, main landmark, router outlet, header and footer.
+- The portfolio page is loaded through a route-level `loadComponent` import.
+- Standalone hero, work, about, experience and contact components own their sections.
+- `WorkComponent` owns filter state with `signal` and derives results with `computed`.
+  `ProjectCardComponent` receives each project through a required signal input.
+- Static resume content is kept in typed, readonly data files. Constants do not need
+  signals because they do not change at runtime.
+- All components use `OnPush`. Zoneless change detection is explicitly configured;
+  neither the application nor the unit tests load Zone.js.
+- About and experience use `@defer` with viewport/keyboard-interaction triggers and
+  viewport hydration. Incremental hydration renders their complete content on the
+  server, including in prerendered HTML, while deferring their JavaScript on the client.
+  Persistent fragment targets preserve section navigation before hydration. Loading
+  and error states support client-only rendering and failed chunk downloads.
+- Shared visual styles and accessibility rules live in `src/styles/`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Validation
 
-## Running end-to-end tests
+```sh
+npm run test:ci
+npm run build
+npm run test:e2e
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Unit tests use the zoneless scheduler and `whenStable()` rather than manually
+forcing change detection after signal changes. Deferred success and error states
+are tested explicitly.
 
-## Further help
+The Playwright suite launches the production SSR server and uses installed Microsoft
+Edge (`channel: 'msedge'`). It checks keyboard navigation, filters, disclosures,
+PDF download, JavaScript-disabled content, 320px reflow, reduced motion, and axe
+rules tagged for WCAG 2.2 AA. Install Edge or change the channel in
+`playwright.config.ts` to your available Playwright browser.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+For Karma on Windows with Edge, set `CHROME_BIN` before running the unit tests:
+
+```powershell
+$env:CHROME_BIN = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
+npm run test:ci
+```
+
+Accessibility improvements include named sections, visible focus, a working skip
+link, 44px interaction targets, higher text contrast, polite filter announcements,
+unique disclosure names, new-tab notices, and reduced-motion/forced-color support.
+Automated checks do not establish full WCAG conformance; manual screen-reader,
+zoom/text-spacing, and cross-browser review remain part of release validation.
