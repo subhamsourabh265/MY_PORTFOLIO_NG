@@ -4,6 +4,7 @@ import { WorkComponent } from '../work/work.component';
 import { AboutComponent } from '../about/about.component';
 import { ExperienceComponent } from '../experience/experience.component';
 import { ContactComponent } from '../contact/contact.component';
+import { PROFILE } from '../data/profile';
 @Component({
   selector: 'app-portfolio',
   standalone: true,
@@ -18,4 +19,6 @@ import { ContactComponent } from '../contact/contact.component';
   templateUrl: './portfolio.component.html',
   styles: ':host { display: block; }',
 })
-export class PortfolioComponent {}
+export class PortfolioComponent {
+  readonly profile = PROFILE;
+}

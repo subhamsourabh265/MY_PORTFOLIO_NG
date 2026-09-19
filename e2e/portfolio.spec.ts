@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { readFile } from 'node:fs/promises';
 
 test('SSR includes deferred resume content and does not depend on JavaScript', async ({
   browser,
@@ -23,9 +24,8 @@ test('SSR includes deferred resume content and does not depend on JavaScript', a
   await context.close();
 });
 
-test('keyboard navigation, zoneless filtering, disclosures, and resume download', async ({
+test('keyboard navigation, zoneless filtering, and disclosures', async ({
   page,
-  request,
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
@@ -54,12 +54,29 @@ test('keyboard navigation, zoneless filtering, disclosures, and resume download'
   await page.getByRole('link', { name: 'Experience', exact: true }).click();
   await expect(page.locator('#experience')).toBeInViewport();
   await expect(page.locator('#experience')).toBeFocused();
-  const download = await request.get(
-    '/assets/Subham_Sourabh_Lead_Angular_Resume_V1.pdf',
-  );
-  expect(download.ok()).toBeTruthy();
-  expect(download.headers()['content-type']).toContain('application/pdf');
   expect(errors).toEqual([]);
+});
+
+test('resume download saves the current PDF', async ({ page, request }) => {
+  await page.goto('/');
+  const link = page.getByRole('link', { name: 'Download resume (PDF)' });
+  const url = await link.evaluate(element => (element as HTMLAnchorElement).href);
+  const response = await request.get(url);
+  expect(response.ok()).toBeTruthy();
+  expect(response.headers()['content-type']).toContain('application/pdf');
+  const pdf = await response.body();
+  // A missing asset can be rewritten to index.html with HTTP 200 by Hosting.
+  expect(pdf.subarray(0, 5).toString()).toBe('%PDF-');
+
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    link.click(),
+  ]);
+  expect(await download.failure()).toBeNull();
+  expect(download.suggestedFilename()).toBe(decodeURIComponent(new URL(url).pathname.split('/').pop()!));
+  const savedFile = await download.path();
+  expect(savedFile).not.toBeNull();
+  expect(await readFile(savedFile!)).toEqual(pdf);
 });
 
 for (const width of [1280, 320]) {
