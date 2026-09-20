@@ -18,14 +18,13 @@
         [class.active]="selectedFilter() === item"
         [attr.aria-pressed]="selectedFilter() === item"
       >
-        {{ item }} <span>{{ filterCounts[item] }}</span>
+        {{ item }}
       </button>
     }
   </div>
   <p class="result-count" role="status" aria-live="polite" aria-atomic="true">
-    Showing {{ visibleProjects().length }} contribution{{
-      visibleProjects().length === 1 ? "" : "s"
-    }}: {{ selectedFilter() }}.
+    Showing contribution{{ visibleProjects().length === 1 ? "" : "s" }}:
+    {{ selectedFilter() }}.
   </p>
   <div class="project-grid" id="project-results">
     @for (project of visibleProjects(); track project.name) {

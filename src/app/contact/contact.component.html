@@ -1,6 +1,6 @@
 <section aria-labelledby="contact-heading" class="contact shell">
-  <p class="eyebrow">LET'S CONNECT</p>
   <div class="contact-row">
+    <p class="eyebrow">LET'S CONNECT</p>
     <h2 id="contact-heading">
       Have something<br />in <span class="serif">mind?</span>
     </h2>
@@ -16,9 +16,30 @@
       Let's talk about frontend architecture, engineering leadership, and your
       next challenge.
     </p>
-    <a [href]="'mailto:' + profile.email">{{ profile.email }} ↗</a>
+    <p>Experience, skills, and project highlights.</p>
   </div>
+
   <div class="social-links">
+    <div class="contact-resume">
+      <a class="resume-link" [href]="profile.resume" download>
+        <svg
+          class="resume-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4" />
+        </svg>
+        <span>Download resume</span>
+        <span class="resume-format">(PDF)</span>
+      </a>
+    </div>
+    <a [href]="'mailto:' + profile.email">{{ profile.email }} ↗</a>
     <span>Delhi NCR, Haryana</span><a href="tel:+919903657484">+91 9903657484</a
     ><a
       href="https://linkedin.com/in/subham-sourabh-5b07b110b"

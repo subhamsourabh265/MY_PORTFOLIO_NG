@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:my_portfolio": "node dist/my_portfolio/server/server.mjs",
-    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "test:e2e": "playwright test",
     "deploy:firebase": "npm run build:prod && firebase deploy --project about-subham",
     "preview:firebase": "npm run build && firebase emulators:start --only hosting --project demo-my-portfolio",

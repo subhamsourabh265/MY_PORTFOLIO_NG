@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFile } from 'node:fs/promises';
+import { PROJECTS } from '../src/app/data/projects';
 
 test('SSR includes deferred resume content and does not depend on JavaScript', async ({
   browser,
@@ -30,7 +31,9 @@ test('keyboard navigation, zoneless filtering, and disclosures', async ({
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/');
-  const tcs = page.getByRole('button', { name: 'TCS' });
+  const employer = 'Tata Consultancy Services';
+  const expectedProjects = PROJECTS.filter(project => project.category === employer);
+  const tcs = page.getByRole('button', { name: employer });
   await expect(tcs).toBeEnabled();
   await page.keyboard.press('Tab');
   await expect(
@@ -42,42 +45,47 @@ test('keyboard navigation, zoneless filtering, and disclosures', async ({
   await tcs.focus();
   await expect(tcs).toBeFocused();
   await page.keyboard.press('Space');
-  await expect(page.locator('.project')).toHaveCount(2);
+  await expect(page.locator('.project-heading h3')).toHaveText(expectedProjects.map(project => project.name));
   await expect(tcs).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('status')).toContainText(
-    'Showing 2 contributions: TCS',
+    `Showing ${expectedProjects.length} contribution${expectedProjects.length === 1 ? '' : 's'}: ${employer}`,
   );
   const disclosure = page.locator('summary').first();
   await disclosure.focus();
   await page.keyboard.press('Enter');
   await expect(page.locator('details').first()).toHaveAttribute('open', '');
+  await page.getByRole('button', { name: 'All work' }).click();
+  await expect(page.locator('.project-heading h3')).toHaveText(PROJECTS.map(project => project.name));
+  await expect(tcs).toHaveAttribute('aria-pressed', 'false');
   await page.getByRole('link', { name: 'Experience', exact: true }).click();
   await expect(page.locator('#experience')).toBeInViewport();
   await expect(page.locator('#experience')).toBeFocused();
   expect(errors).toEqual([]);
 });
 
-test('resume download saves the current PDF', async ({ page, request }) => {
-  await page.goto('/');
-  const link = page.getByRole('link', { name: 'Download resume (PDF)' });
-  const url = await link.evaluate(element => (element as HTMLAnchorElement).href);
-  const response = await request.get(url);
-  expect(response.ok()).toBeTruthy();
-  expect(response.headers()['content-type']).toContain('application/pdf');
-  const pdf = await response.body();
-  // A missing asset can be rewritten to index.html with HTTP 200 by Hosting.
-  expect(pdf.subarray(0, 5).toString()).toBe('%PDF-');
+for (const section of ['.hero', '#contact']) {
+  test(`resume download saves the current PDF from ${section}`, async ({ page, request }) => {
+    await page.goto('/');
+    const link = page.locator(section).getByRole('link', { name: 'Download resume (PDF)' });
+    const url = await link.evaluate(element => (element as HTMLAnchorElement).href);
+    const response = await request.get(url);
+    expect(response.ok()).toBeTruthy();
+    expect(response.headers()['content-type']).toContain('application/pdf');
+    const pdf = await response.body();
+    // A missing asset can be rewritten to index.html with HTTP 200 by Hosting.
+    expect(pdf.subarray(0, 5).toString()).toBe('%PDF-');
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    link.click(),
-  ]);
-  expect(await download.failure()).toBeNull();
-  expect(download.suggestedFilename()).toBe(decodeURIComponent(new URL(url).pathname.split('/').pop()!));
-  const savedFile = await download.path();
-  expect(savedFile).not.toBeNull();
-  expect(await readFile(savedFile!)).toEqual(pdf);
-});
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      link.click(),
+    ]);
+    expect(await download.failure()).toBeNull();
+    expect(download.suggestedFilename()).toBe(decodeURIComponent(new URL(url).pathname.split('/').pop()!));
+    const savedFile = await download.path();
+    expect(savedFile).not.toBeNull();
+    expect(await readFile(savedFile!)).toEqual(pdf);
+  });
+}
 
 for (const width of [1280, 320]) {
   test(`WCAG 2.2 AA automated checks and reflow at ${width}px`, async ({
@@ -107,6 +115,9 @@ for (const width of [1280, 320]) {
     await page.screenshot({
       path: testInfo.outputPath(`portfolio-${width}.png`),
       fullPage: true,
+    });
+    await page.locator('.contact').screenshot({
+      path: testInfo.outputPath(`contact-${width}.png`),
     });
   });
 }

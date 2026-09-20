@@ -6,7 +6,7 @@ export default defineConfig({
   ...baseConfig,
   use: { ...baseConfig.use, baseURL: 'http://127.0.0.1:5000' },
   webServer: {
-    command: 'firebase emulators:start --only hosting --project demo-my-portfolio',
+    command: 'npm run build && firebase emulators:start --only hosting --project demo-my-portfolio',
     url: 'http://127.0.0.1:5000',
     reuseExistingServer: false,
     timeout: 120_000

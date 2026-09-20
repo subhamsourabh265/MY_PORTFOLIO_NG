@@ -7,6 +7,8 @@ import {
 import { provideRouter, Router } from '@angular/router';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
+import { PROJECTS } from './data/projects';
+import { PROFILE } from './data/profile';
 
 describe('Portfolio shell', () => {
   beforeEach(async () => {
@@ -22,9 +24,8 @@ describe('Portfolio shell', () => {
     await TestBed.inject(Router).navigateByUrl('/');
     await fixture.whenStable();
     const page: HTMLElement = fixture.nativeElement;
-    expect(page.querySelector('h1')?.textContent).toContain(
-      'Scalable frontends.',
-    );
+    expect(page.querySelectorAll('h1').length).toBe(1);
+    expect(page.querySelector('#hero-heading')?.textContent?.trim()).toBeTruthy();
     expect(page.querySelector('#main')?.getAttribute('tabindex')).toBe('-1');
     for (const id of ['work', 'about', 'experience', 'contact']) {
       expect(page.querySelector(`#${id}`)?.getAttribute('tabindex')).toBe('-1');
@@ -39,9 +40,9 @@ describe('Portfolio shell', () => {
     expect(page.querySelector('#experience-heading')?.textContent).toContain(
       'Leading teams.',
     );
-    expect(page.querySelectorAll('.project').length).toBe(3);
+    expect(page.querySelectorAll('.project').length).toBe(PROJECTS.length);
     expect(page.querySelector('.contact-arrow')?.getAttribute('href')).toBe(
-      'mailto:sourabh.shubham120@gmail.com',
+      `mailto:${PROFILE.email}`,
     );
   });
 
@@ -49,12 +50,14 @@ describe('Portfolio shell', () => {
     const fixture = TestBed.createComponent(AppComponent);
     await TestBed.inject(Router).navigateByUrl('/');
     await fixture.whenStable();
-    const [about] = await fixture.getDeferBlocks();
-    await about.render(DeferBlockState.Error);
+    const blocks = await fixture.getDeferBlocks();
+    for (const block of blocks) await block.render(DeferBlockState.Error);
     const page: HTMLElement = fixture.nativeElement;
     expect(page.querySelector('#about [role="alert"]')?.textContent).toContain(
       'Unable to load about',
     );
-    expect(page.querySelector('#about a[href$=".pdf"]')).not.toBeNull();
+    for (const section of ['about', 'experience']) {
+      expect(page.querySelector(`#${section} a[href$=".pdf"]`)?.getAttribute('href')).toBe(PROFILE.resume);
+    }
   });
 });

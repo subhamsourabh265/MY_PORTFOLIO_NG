@@ -94,6 +94,10 @@ Unit tests use the zoneless scheduler and `whenStable()` rather than manually
 forcing change detection after signal changes. Deferred success and error states
 are tested explicitly.
 
+Both `test:e2e` and `test:firebase` build the current source before starting their
+test server. Project-filter assertions use the current portfolio data, so adding
+projects does not require updating hard-coded counts in the tests.
+
 The Playwright suite launches the production SSR server and uses installed Microsoft
 Edge (`channel: 'msedge'`). It checks keyboard navigation, filters, disclosures,
 PDF download, JavaScript-disabled content, 320px reflow, reduced motion, and axe

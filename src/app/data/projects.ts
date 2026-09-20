@@ -12,6 +12,30 @@ export interface Project {
 }
 export const PROJECTS: readonly Project[] = [
   {
+    name: 'Admin Portal',
+    category: 'Publicis Sapient',
+    type: 'Modernization / Identity and access management',
+    style: 'orbit',
+    metric: 'Angular 21',
+    label: 'Security and performance modernization',
+    description:
+      'Modernized a legacy admin portal from PHP pages to Angular 21. Improved application security by integrating Azure AD through MSAL.js for authentication, authorization, and role-based access. Used modern Angular 21 features to improve application performance.',
+    stack:
+      'Angular 21 / JavaScript / TypeScript / HTML / SCSS / Azure AD / MSAL.js / AWS CloudWatch / CodeBuild / ECS / CodePipeline / Docker / SonarQube / Git',
+  },
+  {
+    name: 'Van Insurance',
+    category: 'Publicis Sapient',
+    type: 'Insurance / Application architecture',
+    style: 'forma',
+    metric: 'Architecture',
+    label: 'Improved insurance conversions',
+    description:
+      'Led architecture decisions and built a van insurance application from scratch, improving insurance conversions. The open-market product allows each underwriter to offer cover on their own terms.',
+    stack:
+      'Angular 14 / JavaScript / TypeScript / HTML / SCSS / AWS CloudWatch / CodeBuild / ECS / CodePipeline / Docker / SonarQube / Git',
+  },
+  {
     name: 'Universal Access',
     category: 'Publicis Sapient',
     type: 'SSO Integration / Authentication',
@@ -113,5 +137,16 @@ export const PROJECTS: readonly Project[] = [
     description:
       'Modernized the SBI Card registration application from JSP pages to Angular 8. Implemented lazy loading, accessibility improvements, and reactive forms to boost performance and increase credit-card applications.',
     stack: 'Angular 8 / TypeScript / JavaScript / HTML5 / SCSS / SVN',
+  },
+  {
+    name: 'Kaufland Enterprise Product',
+    category: 'Tata Consultancy Services',
+    type: 'Enterprise application / Database development',
+    style: 'offscript',
+    metric: 'ASP.NET',
+    label: 'Code quality and database development',
+    description:
+      'Contributed to the Kaufland Enterprise Product in my first project at Tata Consultancy Services. Addressed code-quality issues and created database schemas and tables under the guidance of senior developers.',
+    stack: 'ASP.NET / SQL Server / DynamoDB',
   },
 ];

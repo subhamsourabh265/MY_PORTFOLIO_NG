@@ -80,9 +80,7 @@ header {
   border-bottom: 1px solid #dedfd6;
 }
 .brand {
-  font-weight: 800;
-  font-size: 33px;
-  letter-spacing: -3px;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -410,15 +408,22 @@ details small {
   margin-bottom: 50px;
 }
 .contact-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  margin: 20px 0;
+  gap: 20px 32px;
+  margin-bottom: 24px;
+}
+.contact-row .eyebrow {
+  grid-column: 1;
 }
 .contact h2 {
+  grid-column: 1;
   font-size: 62px;
 }
 .contact-arrow {
+  grid-column: 2;
+  grid-row: 1 / 3;
   border-radius: 50%;
   width: 84px;
   height: 84px;
@@ -434,8 +439,9 @@ details small {
 }
 .contact-bottom {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
   font-size: 12px;
   color: #636b59;
 }
@@ -583,12 +589,15 @@ footer > a:last-child {
     margin-bottom: 32px;
   }
   .contact h2 {
-    font-size: 48px;
+    grid-column: 1 / -1;
+    font-size: clamp(2rem, 9vw, 3rem);
+    letter-spacing: -1px;
   }
   .contact-arrow {
-    width: 65px;
-    height: 65px;
-    font-size: 33px;
+    grid-row: 1;
+    width: 48px;
+    height: 48px;
+    font-size: 28px;
   }
   .contact-bottom {
     flex-direction: column;
@@ -626,9 +635,61 @@ footer > a:last-child {
   flex-wrap: wrap;
 }
 .resume-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  max-width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #263322;
+  border-radius: 10px;
+  background: #263322;
+  color: #f8f7f3;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  box-shadow: 0 3px 8px #26332218;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.resume-link:hover {
+  background: #3c512f;
+  border-color: #3c512f;
+  box-shadow: 0 5px 14px #26332226;
+}
+.resume-link:active {
+  background: #1c2818;
+  box-shadow: none;
+}
+.resume-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: #d7edaa;
+}
+.resume-format {
+  padding: 3px 6px;
+  border: 1px solid #788b68;
+  border-radius: 4px;
+  color: #e1eccf;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+.contact-resume {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+.contact-resume p {
+  color: #555e4e;
   font-size: 13px;
-  text-decoration: underline;
-  text-underline-offset: 5px;
+  line-height: 1.6;
 }
 .impact-preview {
   position: relative;
@@ -757,14 +818,18 @@ footer > a:last-child {
   .social-links {
     gap: 18px;
   }
+  .contact .social-links > span {
+    flex-basis: 100%;
+  }
+  .contact-resume {
+    align-items: flex-start;
+    flex-direction: column;
+  }
   .contact-bottom a {
     flex-shrink: 1;
   }
 }
 @media (max-width: 380px) {
-  header .brand {
-    font-size: 26px;
-  }
   nav {
     gap: 8px;
   }
@@ -772,12 +837,9 @@ footer > a:last-child {
     border: 0;
     padding: 0;
   }
-  .contact h2 {
-    font-size: 39px;
-  }
-  .contact-arrow {
-    width: 50px;
-    height: 50px;
-    flex-shrink: 0;
+  .contact .resume-link {
+    width: 100%;
+    gap: 8px;
+    padding-inline: 10px;
   }
 }
