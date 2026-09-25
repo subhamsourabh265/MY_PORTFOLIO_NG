@@ -9,8 +9,8 @@
     <h3>{{ project().name }}</h3>
   </div>
   <p class="project-type">{{ project().type }}</p>
-  <details>
-    <summary>
+  <details #contribution (pointerleave)="onLeave($event, contribution)" (focusout)="onFocusOut($event, contribution)">
+    <summary (pointerenter)="onHover($event, contribution)" (pointerleave)="cancelHover()" (click)="toggle($event, contribution)">
       View contribution<span class="sr-only">: {{ project().name }}</span>
       <span aria-hidden="true">+</span>
     </summary>

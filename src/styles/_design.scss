@@ -63,7 +63,7 @@ h2 { font-size: clamp(34px, 3.5vw, 48px); letter-spacing: -1.8px; }
 .project-heading { padding-inline: 10px; margin-top: 22px; }
 .project-heading h3 { font-size: 19px; font-weight: 600; letter-spacing: -.4px; }
 .project-type { padding-inline: 10px; min-height: 46px; }
-.project details { margin: 16px 10px 0; }
+.project details { margin: 16px 10px 0; overflow: hidden; }
 .project summary { padding-block: 16px; font-weight: 500; }
 .project details p { overflow-wrap: anywhere; }
 .project details small { display: block; padding-bottom: 18px; }
