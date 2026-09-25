@@ -23,7 +23,7 @@
     }
   </div>
   <p class="result-count" role="status" aria-live="polite" aria-atomic="true">
-    Showing contribution{{ visibleProjects().length === 1 ? "" : "s" }}:
+    Showing {{ visibleProjects().length }} contribution{{ visibleProjects().length === 1 ? "" : "s" }}:
     {{ selectedFilter() }}.
   </p>
   <div class="project-grid" id="project-results">
@@ -32,3 +32,4 @@
     }
   </div>
 </section>
+
