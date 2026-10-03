@@ -35,6 +35,12 @@ export function app(): express.Express {
     '*.*',
     express.static(browserDistFolder, {
       maxAge: '1y',
+      setHeaders: (res, filePath) => {
+        if (/\.(?:html|webmanifest)$/.test(filePath) ||
+            /(?:ngsw-worker\.js|safety-worker\.js|worker-basic\.min\.js|ngsw\.json)$/.test(filePath)) {
+          res.setHeader('Cache-Control', 'no-cache');
+        }
+      },
     }),
   );
 

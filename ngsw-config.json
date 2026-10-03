@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "portfolio",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/index.html",
+          "/index.csr.html",
+          "/favicon.ico",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js",
+          "/assets/**"
+        ]
+      }
+    }
+  ]
+}

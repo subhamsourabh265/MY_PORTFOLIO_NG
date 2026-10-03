@@ -64,6 +64,30 @@ npm run test:firebase
 
 The emulator checks use an isolated `demo-my-portfolio` project and do not deploy.
 
+## Progressive Web App
+
+Production builds include Angular's service worker and an installable web app
+manifest with regular, maskable, and Apple touch icons. After the first online
+visit finishes installing the worker, the portfolio, lazy-loaded sections, photo,
+and resume PDF are cached for offline visits. External websites and email links
+still require their usual network connection or application.
+
+Use HTTPS in production (Firebase provides this) or localhost for testing.
+`npm start` deliberately disables the service worker. To try the PWA locally:
+
+```sh
+npm run build
+npm run serve:ssr:my_portfolio
+```
+
+Open the localhost URL printed by the server, wait for the service worker to
+activate in browser DevTools > Application, then go offline and reload. Install
+using the browser's install action, or Add to Home Screen on iOS. Installation
+controls vary by browser. New releases are downloaded in the background and used
+on a subsequent visit after existing app tabs close. Firebase revalidates worker
+scripts and manifests so updates are not held by the immutable bundle cache rule.
+`npm run test:e2e` includes an offline reload and cached resume check.
+
 ## Architecture
 
 - `app.component` owns the skip link, main landmark, router outlet, header and footer.
